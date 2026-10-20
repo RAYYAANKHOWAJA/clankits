@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ClanKits | PvP Generators Minecraft Server</title>
+<meta name="description" content="Welcome to ClanKits, where every journey matters. A Minecraft PvP generators server with clans, bounties, events and more. Join at clankits.minefort.com">
+<meta name="theme-color" content="#061018">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700&family=Pixelify+Sans:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#061018;--panel:#0b1c27;--panel2:#10303f;--edge:#1c4d60;--shadow:#02060a;--cy:#22d8ee;--cy2:#8cf4ff;--cyd:#0e8fa3;--text:#e8f8fb;--mute:#8fb4bf;--red:#ef5a66;--green:#4fd67a}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{background:var(--bg);color:var(--text);font:400 17px/1.6 "Nunito Sans",system-ui,sans-serif;background-image:linear-gradient(#0a1a24 1px,transparent 1px),linear-gradient(90deg,#0a1a24 1px,transparent 1px);background-size:48px 48px;overflow-x:hidden}
+h1,h2,h3,.pix{font-family:"Pixelify Sans",monospace;font-weight:700;line-height:1.1}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--cy2);outline-offset:3px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+.box{background:var(--panel);box-shadow:0 0 0 3px var(--edge),6px 6px 0 3px var(--shadow)}
+.btn{font:700 17px "Pixelify Sans",monospace;color:#032229;background:var(--cy);border:0;padding:12px 20px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 0 var(--cyd),0 0 0 3px #032229;transition:transform .08s,box-shadow .08s}
+.btn:hover{transform:translateY(-2px);background:var(--cy2);box-shadow:0 6px 0 var(--cyd),0 0 0 3px #032229}
+.btn:active{transform:translateY(4px);box-shadow:0 0 0 var(--cyd),0 0 0 3px #032229}
+.btn.alt{background:var(--panel2);color:var(--text);box-shadow:0 4px 0 #071a24,0 0 0 3px var(--edge)}
+.btn.alt:hover{background:#15415a;box-shadow:0 6px 0 #071a24,0 0 0 3px var(--cy)}
+.btn.alt:active{box-shadow:0 0 0 #071a24,0 0 0 3px var(--edge)}
+.btn.dc{background:#5865f2;color:#fff;box-shadow:0 4px 0 #3b45b5,0 0 0 3px #0c1034}
+.btn.dc:hover{background:#6f7cff;box-shadow:0 6px 0 #3b45b5,0 0 0 3px #0c1034}
+.btn.dc:active{box-shadow:0 0 0 #3b45b5,0 0 0 3px #0c1034}
+.btn svg{width:22px;height:22px;fill:currentColor;flex:none}
+/* nav */
+nav{position:sticky;top:0;z-index:20;background:#061018ee;border-bottom:3px solid var(--edge)}
+nav .wrap{display:flex;align-items:center;gap:14px;height:62px}
+.logo{font-size:28px;text-decoration:none;color:var(--cy);text-shadow:2px 2px 0 var(--shadow)}
+.logo span{color:var(--text)}
+nav ul{display:flex;gap:4px;list-style:none;padding:0;margin:0 auto 0 18px}
+nav ul a{display:block;padding:6px 12px;text-decoration:none;color:var(--mute);font:500 17px "Pixelify Sans",monospace}
+nav ul a:hover{color:var(--cy2);background:var(--panel2)}
+nav .btn{padding:8px 14px;font-size:15px}
+nav .dc{padding:8px 10px}
+/* hero */
+.hero{padding:60px 0 56px}
+.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:44px;align-items:center}
+.pill{display:inline-flex;align-items:center;gap:10px;background:var(--panel);box-shadow:0 0 0 3px var(--edge);padding:6px 14px;font:500 17px "Pixelify Sans",monospace;margin-bottom:20px}
+.dot{width:12px;height:12px;background:var(--mute)}
+.pill.on .dot{background:var(--green);animation:blink 1.6s steps(2) infinite}
+.pill.off .dot{background:var(--red)}
+@keyframes blink{50%{opacity:.35}}
+h1{font-size:clamp(54px,9vw,96px);text-shadow:5px 5px 0 var(--shadow)}
+h1 b{color:var(--cy)}
+.quote{font:500 clamp(20px,2.6vw,25px)/1.35 "Pixelify Sans",monospace;color:var(--cy2);margin:18px 0 12px;padding-left:16px;border-left:5px solid var(--cy)}
+.lead{color:var(--mute);margin-bottom:26px;max-width:48ch}
+.ipbox{display:flex;max-width:480px;margin-bottom:18px}
+.ipbox code{flex:1;min-width:0;font:700 21px "Pixelify Sans",monospace;padding:12px 16px;background:var(--bg);box-shadow:inset 0 0 0 3px var(--edge);display:flex;align-items:center;overflow-wrap:anywhere}
+.ipbox .btn{box-shadow:0 0 0 3px #032229}
+.row{display:flex;gap:14px;flex-wrap:wrap}
+/* sim */
+.win{overflow:hidden}
+.bar{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--panel2);border-bottom:3px solid var(--edge);font:500 16px "Pixelify Sans",monospace}
+.bar i{width:12px;height:12px;background:var(--red);display:inline-block}
+.bar i:nth-child(2){background:#f2c14e}
+.bar i:nth-child(3){background:var(--green)}
+.bar span{margin-left:6px;color:var(--mute)}
+.sim{padding:16px}
+.stage{position:relative;height:190px;background:var(--bg);box-shadow:inset 0 0 0 3px var(--edge);overflow:hidden;margin-bottom:14px}
+.gen{position:absolute;left:50%;top:10px;width:56px;height:56px;margin-left:-28px;background:var(--cy);box-shadow:inset -8px -8px 0 var(--cyd),inset 8px 8px 0 var(--cy2),0 0 0 3px #032229;z-index:2;animation:pulse 2s steps(2) infinite}
+@keyframes pulse{50%{filter:brightness(1.2)}}
+.drop{position:absolute;top:66px;left:calc(50% - 8px);width:16px;height:16px;animation:fall 1.4s cubic-bezier(.5,0,1,.6) forwards}
+@keyframes fall{to{transform:translateY(100px)}}
+.chest{position:absolute;left:50%;bottom:0;width:90px;height:44px;margin-left:-45px;background:#8a5a2b;box-shadow:inset 0 8px 0 #a8743c,inset 0 -8px 0 #6b4320,0 0 0 3px #2c1b0a}
+.chest::after{content:"";position:absolute;left:50%;top:14px;width:12px;height:14px;margin-left:-6px;background:var(--cy2)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.stat{background:var(--bg);box-shadow:inset 0 0 0 3px var(--edge);padding:8px 10px}
+.stat small{display:block;color:var(--mute);font-size:13px}
+.stat b{font:700 24px "Pixelify Sans",monospace}
+.stat.pop b{animation:pop .3s}
+@keyframes pop{50%{transform:scale(1.3);color:var(--cy2)}}
+.acts{display:flex;gap:10px;flex-wrap:wrap}
+.acts .btn{flex:1;padding:10px 8px;font-size:15px;min-width:90px}
+.hint{color:var(--mute);font-size:14px;margin-top:12px;min-height:22px}
+/* sections */
+section{padding:60px 0}
+.head{margin-bottom:30px}
+h2{font-size:clamp(32px,5vw,46px);margin-bottom:10px;text-shadow:3px 3px 0 var(--shadow)}
+h2 b{color:var(--cy)}
+.sub{color:var(--mute);max-width:58ch}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:24px}
+.tile{padding:20px;text-align:left;color:inherit;font:inherit;border:0;cursor:pointer;transition:transform .12s;display:flex;flex-direction:column}
+.tile:hover{transform:translate(-3px,-3px);box-shadow:0 0 0 3px var(--cy),9px 9px 0 3px var(--shadow)}
+.tile h3{font-size:25px;margin:14px 0 6px}
+.tile p{color:var(--mute);font-size:15px;flex:1}
+.open{margin-top:12px;color:var(--cy);font:500 16px "Pixelify Sans",monospace}
+.ico{width:44px;height:44px;display:block}
+.clans .wrap{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.clans ul{list-style:none;padding:0;margin:20px 0 26px}
+.clans li{padding:7px 0 7px 28px;position:relative}
+.clans li::before{content:"";position:absolute;left:0;top:14px;width:12px;height:12px;background:var(--cy);box-shadow:3px 3px 0 var(--cyd)}
+.roster{padding:0}
+.roster .body{padding:8px 18px 18px}
+.member{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:2px dashed var(--edge)}
+.member:last-child{border:0}
+.face{width:34px;height:34px;flex:none;background:var(--cy);box-shadow:inset -5px -5px 0 var(--cyd),inset 5px 5px 0 var(--cy2)}
+.member b{font:700 19px "Pixelify Sans",monospace;flex:1}
+.member small{color:var(--mute)}
+.cmdwrap{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.cmds{padding:20px}
+.cmd{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 0;border-bottom:2px dashed var(--edge)}
+.cmd:last-child{border:0}
+.cmd code{font:700 19px "Pixelify Sans",monospace;color:var(--cy);background:0;border:0;cursor:pointer;padding:0}
+.cmd code:hover{color:var(--cy2)}
+.cmd span{color:var(--mute);font-size:15px;text-align:right}
+.join{text-align:center}
+.join .box{padding:44px 20px}
+.join .sub{margin:0 auto}
+.join .ipbox{margin:24px auto}
+footer{padding:30px 0;color:var(--mute);font-size:14px;text-align:center;border-top:3px solid var(--edge)}
+/* dialog */
+dialog{border:0;padding:0;background:none;color:var(--text);max-width:520px;width:calc(100% - 32px);margin:auto;overflow:visible}
+dialog::backdrop{background:#02080dcc}
+dialog[open]{animation:win .22s cubic-bezier(.2,1.4,.4,1)}
+dialog[open]::backdrop{animation:fade .2s}
+@keyframes win{from{transform:scale(.85) translateY(20px);opacity:0}}
+@keyframes fade{from{opacity:0}}
+.dlg .bar button{margin-left:auto;background:var(--red);color:#fff;border:0;font:700 16px "Pixelify Sans",monospace;padding:2px 10px;cursor:pointer}
+.dlg .bar button:hover{background:#ff7a85}
+.dlg .body{padding:24px}
+.dlg h3{font-size:32px;margin-bottom:10px;color:var(--cy)}
+.dlg p{color:var(--mute);margin-bottom:12px}
+.dlg ul{padding-left:20px}
+.dlg li{margin-bottom:6px}
+.dlg .btn{margin-top:16px}
+#toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,120px);background:var(--cy);color:#032229;font:700 18px "Pixelify Sans",monospace;padding:10px 20px;box-shadow:0 0 0 3px #032229;transition:transform .25s;z-index:99;max-width:calc(100% - 32px);text-align:center}
+#toast.on{transform:translate(-50%,0)}
+@media(max-width:860px){.hero .wrap,.clans .wrap,.cmdwrap{grid-template-columns:1fr}nav ul{display:none}nav .wrap{justify-content:space-between}.hero{padding-top:40px}.logo{margin-right:auto}}
+@media(max-width:420px){nav .btn:not(.dc){display:none}.ipbox{flex-direction:column}}
+@media(prefers-reduced-motion:reduce){*,::before,::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="dc" viewBox="0 0 24 24"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></symbol></svg>
+
+<nav>
+<div class="wrap">
+<a class="logo pix" href="#top">Clan<span>Kits</span></a>
+<ul>
+<li><a href="#features">Gameplay</a></li>
+<li><a href="#clans">Clans</a></li>
+<li><a href="#commands">Commands</a></li>
+<li><a href="#join">Join</a></li>
+</ul>
+<a class="btn dc" data-discord target="_blank" rel="noopener" aria-label="Join our Discord"><svg><use href="#dc"/></svg></a>
+<button class="btn" data-copy>Copy IP</button>
+</div>
+</nav>
+
+<header class="hero" id="top">
+<div class="wrap">
+<div>
+<div class="pill" id="pill" role="status"><span class="dot"></span><span id="pl">Checking server...</span></div>
+<h1>Clan<b>Kits</b></h1>
+<p class="quote">Welcome to ClanKits, where every journey matters.</p>
+<p class="lead">A PvP generators server. Start with gens at spawn, run the parkour for loot, then take your earnings into the PvP zone with your clan.</p>
+<div class="ipbox">
+<code>clankits.minefort.com</code>
+<button class="btn" data-copy>Copy IP</button>
+</div>
+<div class="row">
+<a class="btn dc" data-discord target="_blank" rel="noopener"><svg><use href="#dc"/></svg>Join our Discord</a>
+<a class="btn alt" href="#features">Explore features</a>
+</div>
+</div>
+
+<div class="box win" aria-label="Interactive generator demo">
+<div class="bar"><i></i><i></i><i></i><span>try the gen loop</span></div>
+<div class="sim">
+<div class="stage"><div class="gen"></div><div class="chest"></div></div>
+<div class="stats">
+<div class="stat" id="s-loot"><small>Loot</small><b>0</b></div>
+<div class="stat" id="s-money"><small>Money</small><b>$0</b></div>
+<div class="stat" id="s-coins"><small>Coins</small><b>0</b></div>
+</div>
+<div class="acts">
+<button class="btn" id="sell">/sell</button>
+<button class="btn alt" id="compress">/compress</button>
+<button class="btn alt" id="shop">/shop</button>
+</div>
+<p class="hint" id="hint">Your gen is dropping loot. Press /sell to cash it in.</p>
+</div>
+</div>
+</div>
+</header>
+
+<section id="features">
+<div class="wrap">
+<div class="head">
+<h2>Join and <b>explore</b></h2>
+<p class="sub">Everything on ClanKits feeds the same loop: collect, sell, upgrade, fight. Click any card to open it.</p>
+</div>
+<div class="grid" id="grid"></div>
+</div>
+</section>
+
+<section class="clans" id="clans">
+<div class="wrap">
+<div>
+<h2>Stronger with a <b>clan</b></h2>
+<p class="sub">ClanKits is built for teams. Find your people, share the grind and take on the PvP zone together.</p>
+<ul>
+<li>Create your own clan or join one that fits your style</li>
+<li>Team up on gens, parkour runs and fights</li>
+<li>Take on bounties and events as a group</li>
+</ul>
+<a class="btn dc" data-discord target="_blank" rel="noopener"><svg><use href="#dc"/></svg>Find a clan on Discord</a>
+</div>
+<div class="box win">
+<div class="bar"><i></i><i></i><i></i><span>why join a clan</span></div>
+<div class="body">
+<div class="member"><span class="face"></span><b>Team up</b><small>Play with friends</small></div>
+<div class="member"><span class="face" style="background:#4fd67a;box-shadow:inset -5px -5px 0 #2a9a50,inset 5px 5px 0 #9bf0b6"></span><b>Share the grind</b><small>Gens and parkour</small></div>
+<div class="member"><span class="face" style="background:#ef5a66;box-shadow:inset -5px -5px 0 #b02f3b,inset 5px 5px 0 #ff9aa2"></span><b>Fight together</b><small>Own the PvP zone</small></div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="commands">
+<div class="wrap cmdwrap">
+<div>
+<h2>Commands to <b>know</b></h2>
+<p class="sub">Click a command to copy it, then paste it into game chat.</p>
+</div>
+<div class="box cmds">
+<div class="cmd"><code>/sell</code><span>Turn loot into money</span></div>
+<div class="cmd"><code>/shop</code><span>Buy gear and PvP items</span></div>
+<div class="cmd"><code>/compress</code><span>Compress money into coins</span></div>
+<div class="cmd"><code>/bounty</code><span>Put a price on a player</span></div>
+<div class="cmd"><code>/clans</code><span>Create, join or manage a clan</span></div>
+</div>
+</div>
+</section>
+
+<section class="join" id="join">
+<div class="wrap">
+<div class="box">
+<h2>Your journey <b>starts here</b></h2>
+<p class="sub">Open Minecraft, add a server and paste the IP. Then join the Discord to meet the community.</p>
+<div class="ipbox">
+<code>clankits.minefort.com</code>
+<button class="btn" data-copy>Copy IP</button>
+</div>
+<a class="btn dc" data-discord target="_blank" rel="noopener"><svg><use href="#dc"/></svg>Join our Discord</a>
+</div>
+</div>
+</section>
+
+<footer>ClanKits is not affiliated with Mojang or Microsoft. Minecraft is a trademark of Mojang Studios.</footer>
+
+<dialog id="dlg" class="dlg" aria-labelledby="dt">
+<div class="box win">
+<div class="bar"><i></i><i></i><i></i><span>clankits.exe</span><button id="x" aria-label="Close window">X</button></div>
+<div class="body" id="db"></div>
+</div>
+</dialog>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const IP="clankits.minefort.com";
+const DISCORD="https://discord.gg/5vaBee3ygW";
+const $=s=>document.querySelector(s);
+const toast=$("#toast");let tt;
+function say(m){toast.textContent=m;toast.classList.add("on");clearTimeout(tt);tt=setTimeout(()=>toast.classList.remove("on"),1900)}
+function copy(t,msg){
+  const done=()=>say(msg||"Copied "+t);
+  if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(t).then(done,()=>fb(t,done))}else fb(t,done)
+}
+function fb(t,done){const a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();try{document.execCommand("copy")}catch(e){}a.remove();done()}
+const GO="Server IP copied. See you in game!";
+document.querySelectorAll("[data-copy]").forEach(b=>b.onclick=()=>copy(IP,GO));
+document.querySelectorAll("[data-discord]").forEach(a=>a.href=DISCORD);
+document.querySelectorAll(".cmd code").forEach(c=>c.onclick=()=>copy(c.textContent));
+
+/* live player count */
+async function ask(){
+  const urls=["https://api.mcstatus.io/v2/status/java/"+IP,"https://api.mcsrvstat.us/3/"+IP];
+  for(const u of urls){
+    try{
+      const r=await fetch(u,{cache:"no-store"});
+      const d=await r.json();
+      if(typeof d.online==="boolean")return d;
+    }catch(e){}
+  }
+  return null;
+}
+let shown=false,busy=false;
+async function status(){
+  if(busy)return;busy=true;
+  const pill=$("#pill"),pl=$("#pl");
+  const d=await ask();
+  busy=false;
+  if(!d){if(!shown){pill.className="pill";pl.textContent="Join to see who is online"}return}
+  shown=true;
+  if(d.online){
+    pill.className="pill on";
+    pl.textContent=((d.players&&d.players.online)||0)+" / "+((d.players&&d.players.max)||"?")+" players online";
+  }else{
+    pill.className="pill off";pl.textContent="Server offline right now";
+  }
+}
+status();
+setInterval(()=>{if(!document.hidden)status()},5000);
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)status()});
+pill_click();
+function pill_click(){$("#pill").style.cursor="pointer";$("#pill").title="Click to refresh";$("#pill").onclick=()=>{$("#pl").textContent="Checking server...";status()}}
+
+/* cards and windows */
+const ic=c=>`<svg class="ico" viewBox="0 0 8 8" shape-rendering="crispEdges"><rect width="8" height="8" fill="${c}"/><rect x="1" y="1" width="3" height="3" fill="#fff" opacity=".35"/><rect x="4" y="4" width="3" height="3" fill="#000" opacity=".25"/></svg>`;
+const D=[
+["Spawn","Starter gens and a parkour course to collect items.","#4fd67a","Everyone starts here. You get starter generators at spawn, so you earn from your first minute.","<li>Starter gens are waiting for you</li><li>Run the spawn parkour to collect items</li><li>Take what you earn into the PvP zone</li>"],
+["Generators","Gens that drop loot while you play.","#22d8ee","Generators produce loot for you. Collect it, sell it, and use the money to grow stronger.","<li>Collect loot from your gens</li><li>Use /sell to turn loot into money</li><li>PvP gens add more risk and more reward</li>"],
+["PvP Zone","An arena with parkour all around it.","#ef5a66","The PvP zone is surrounded by parkour, so movement matters as much as aim.","<li>Parkour routes run all around the zone</li><li>Gens and loot are out in the open</li><li>Win fights and take what you can carry</li>"],
+["Sell, Shop, Compress","Turn loot into money, money into PvP gear.","#f2c14e","Loot becomes money, and money becomes gear.","<li><b>/sell</b> turns your loot into money</li><li><b>/shop</b> is where you spend it</li><li><b>/compress</b> turns money into coins</li><li>Coins buy PvP items in /shop</li>"],
+["Clans","Team up, share the grind, fight together.","#8cf4ff","Clans are the heart of ClanKits. Play with friends and take on the server as a team.","<li>Create or join a clan</li><li>Farm gens and run parkour together</li><li>Compete in bounties and events as a group</li>"],
+["Kits","PvP kits and gear to win fights.","#7b8cff","Spend coins in /shop to get the PvP items that give you an edge.","<li>Earn money from gens and loot</li><li>Compress it into coins</li><li>Buy PvP stuff in /shop</li>"],
+["Bounties","Hunt players for rewards.","#b06cf0","Someone on a streak? Put a bounty on them, or collect one yourself.","<li>Place bounties on other players</li><li>Defeat a target to claim the reward</li><li>Check bounties before you fight</li>"],
+["Chat Games","Win rewards right in chat.","#f08a3c","Quick games run in chat while you play. Be the first to answer and win.","<li>No need to stop what you are doing</li><li>Fast typers and quick thinkers win</li><li>Rewards go straight to you</li>"],
+["Events","Server-wide competitions with prizes.","#4fa0f5","Special events run on the server with prizes for the best players and clans.","<li>Watch chat and Discord for event times</li><li>Join from spawn when one starts</li><li>Top players and clans earn prizes</li>"]
+];
+$("#grid").innerHTML=D.map((d,i)=>`<button class="tile box" data-i="${i}">${ic(d[2])}<h3>${d[0]}</h3><p>${d[1]}</p><span class="open">Open window</span></button>`).join("");
+const dlg=$("#dlg");
+function openWin(h){$("#db").innerHTML=h;dlg.showModal();$("#x").focus()}
+const cta=`<button class="btn" data-play>Copy IP and play</button> <a class="btn dc" href="${DISCORD}" target="_blank" rel="noopener"><svg><use href="#dc"/></svg>Discord</a>`;
+document.querySelectorAll(".tile").forEach(t=>t.onclick=()=>{
+  const d=D[t.dataset.i];
+  openWin(`<h3>${d[0]}</h3><p>${d[3]}</p><ul>${d[4]}</ul>${cta}`);
+});
+document.addEventListener("click",e=>{if(e.target.closest("[data-play]")){copy(IP,GO);dlg.close()}});
+$("#x").onclick=()=>dlg.close();
+dlg.addEventListener("click",e=>{if(e.target===dlg)dlg.close()});
+
+/* gen loop demo */
+let loot=0,money=0,coins=0;
+const calm=matchMedia("(prefers-reduced-motion:reduce)").matches;
+const cols=["#22d8ee","#f2c14e","#4fd67a","#ef5a66"];
+function show(){$("#s-loot b").textContent=loot;$("#s-money b").textContent="$"+money;$("#s-coins b").textContent=coins}
+function bump(id){const e=$(id);e.classList.remove("pop");void e.offsetWidth;e.classList.add("pop")}
+function hint(t){$("#hint").textContent=t}
+setInterval(()=>{
+  if(document.hidden)return;
+  if(calm){loot++;show();return}
+  const d=document.createElement("div");d.className="drop";d.style.background=cols[Math.random()*4|0];
+  d.style.marginLeft=(Math.random()*30-15|0)+"px";
+  d.onanimationend=()=>{d.remove();loot++;show()};
+  $(".stage").appendChild(d);
+},900);
+$("#sell").onclick=()=>{
+  if(!loot){hint("No loot yet. Wait for your gen to drop some.");return}
+  money+=loot*5;hint("Sold "+loot+" loot for $"+loot*5+".");loot=0;show();bump("#s-money");
+};
+$("#compress").onclick=()=>{
+  if(money<100){hint("You need $100 to compress into 1 coin. Keep selling.");return}
+  const c=Math.floor(money/100);coins+=c;money-=c*100;hint("Compressed into "+c+" coin"+(c>1?"s":"")+".");show();bump("#s-coins");
+};
+$("#shop").onclick=()=>openWin(`<h3>/shop</h3><p>In game, /shop is where you spend money on gear and coins on PvP items.</p><ul><li>Your demo coins: ${coins}</li><li>The real shop is waiting at ${IP}</li></ul>${cta}`);
+show();
+</script>
+</body>
+</html>
