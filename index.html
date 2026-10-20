@@ -132,6 +132,22 @@ dialog[open]::backdrop{animation:fade .2s}
 .dlg .btn{margin-top:16px}
 #toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,120px);background:var(--cy);color:#032229;font:700 18px "Pixelify Sans",monospace;padding:10px 20px;box-shadow:0 0 0 3px #032229;transition:transform .25s;z-index:99;max-width:calc(100% - 32px);text-align:center}
 #toast.on{transform:translate(-50%,0)}
+/* leaderboards */
+.lb{padding:20px}
+.tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.tabs .btn{padding:8px 16px;font-size:16px}
+.lb ol{list-style:none;padding:0}
+.lbrow{display:grid;grid-template-columns:52px 40px 1fr auto;align-items:center;gap:12px;padding:9px 4px;border-bottom:2px dashed var(--edge)}
+.lbrow:last-child{border:0}
+.rk{font:700 22px "Pixelify Sans",monospace;color:var(--mute);text-align:center}
+.r1 .rk{color:#f2c14e}.r2 .rk{color:#cfd8dc}.r3 .rk{color:#d08a4e}
+.r1{background:#f2c14e14}
+.lbrow img,.lbrow .face{width:34px;height:34px;display:block;image-rendering:pixelated}
+.lbrow .nm{font:700 19px "Pixelify Sans",monospace;overflow-wrap:anywhere}
+.lbrow .val{font:700 20px "Pixelify Sans",monospace;color:var(--cy2)}
+.lbrow.empty .nm,.lbrow.empty .val{color:var(--mute);font-weight:500}
+#lbnote{margin-top:14px;font-size:14px;color:var(--mute)}
+@media(max-width:420px){.lbrow{grid-template-columns:40px 34px 1fr auto;gap:8px}}
 /* captcha gate */
 #gate{position:fixed;inset:0;z-index:200;background:#061018f5;display:flex;align-items:center;justify-content:center;padding:20px}
 #gate[hidden]{display:none}
@@ -169,6 +185,7 @@ dialog[open]::backdrop{animation:fade .2s}
 <ul>
 <li><a href="#features">Gameplay</a></li>
 <li><a href="#clans">Clans</a></li>
+<li><a href="#leaderboards">Leaderboards</a></li>
 <li><a href="#commands">Commands</a></li>
 <li><a href="#join">Join</a></li>
 </ul>
@@ -247,6 +264,20 @@ dialog[open]::backdrop{animation:fade .2s}
 </div>
 </section>
 
+<section id="leaderboards">
+<div class="wrap">
+<div class="head">
+<h2>Top <b>players</b></h2>
+<p class="sub">The best on ClanKits. Pick a board to see the top 10.</p>
+</div>
+<div class="box lb">
+<div class="tabs" role="tablist" aria-label="Leaderboards" id="lbtabs"></div>
+<ol id="lbrows" aria-live="polite"></ol>
+<p id="lbnote"></p>
+</div>
+</div>
+</section>
+
 <section id="commands">
 <div class="wrap cmdwrap">
 <div>
@@ -303,6 +334,46 @@ document.querySelectorAll("[data-copy]").forEach(b=>b.onclick=()=>copy(IP,GO));
 document.querySelectorAll("[data-discord]").forEach(a=>a.href=DISCORD);
 document.querySelectorAll(".cmd code").forEach(c=>c.onclick=()=>copy(c.textContent));
 
+
+/* leaderboards */
+const LB_CATS=[["money","Money"],["coins","Coins"],["kills","Kills"],["deaths","Deaths"]];
+const LB_DEMO={
+  money:[["ShadowKing",48200000],["NovaStrike",39750000],["BlockBandit",31400000],["IronWolf",26900000],["PixelPhantom",21300000],["CrimsonFox",17850000],["VoidWalker",14200000],["TurboTom",9800000],["FrostByte",6450000],["LuckyLlama",3100000]],
+  coins:[["NovaStrike",5400],["ShadowKing",4980],["IronWolf",4120],["CrimsonFox",3650],["BlockBandit",2990],["PixelPhantom",2410],["VoidWalker",1875],["FrostByte",1320],["TurboTom",960],["LuckyLlama",540]],
+  kills:[["IronWolf",1842],["ShadowKing",1630],["CrimsonFox",1405],["NovaStrike",1288],["VoidWalker",1104],["BlockBandit",967],["PixelPhantom",812],["TurboTom",655],["FrostByte",498],["LuckyLlama",321]],
+  deaths:[["LuckyLlama",1204],["TurboTom",1088],["FrostByte",942],["BlockBandit",871],["PixelPhantom",760],["VoidWalker",688],["CrimsonFox",590],["NovaStrike",503],["ShadowKing",411],["IronWolf",350]]
+};
+let lbData=LB_DEMO,lbLive=false,lbUpdated=0,lbCat="money";
+const esc=t=>String(t).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const cnum=new Intl.NumberFormat("en",{notation:"compact",maximumFractionDigits:2});
+function fmtVal(cat,v){return cat==="money"?"$"+cnum.format(v):Number(v).toLocaleString("en-US")}
+function lbRows(){
+  const list=(lbData[lbCat]||[]).map(r=>Array.isArray(r)?r:[r.name,r.value]);
+  let h="";
+  for(let i=0;i<10;i++){
+    const r=list[i];
+    if(!r){h+=`<li class="lbrow empty"><span class="rk">${i+1}</span><span class="face" style="background:var(--edge);box-shadow:none"></span><span class="nm">&mdash;</span><span class="val">&mdash;</span></li>`;continue}
+    const face=lbLive?`<img src="https://mc-heads.net/avatar/${encodeURIComponent(r[0])}/34" alt="" width="34" height="34" loading="lazy" onerror="this.outerHTML='<span class=\\'face\\'></span>'">`:`<span class="face"></span>`;
+    h+=`<li class="lbrow r${i+1}"><span class="rk">${i+1}</span>${face}<span class="nm">${esc(r[0])}</span><span class="val">${fmtVal(lbCat,r[1])}</span></li>`;
+  }
+  $("#lbrows").innerHTML=h;
+  const n=$("#lbnote");
+  if(lbLive){const m=Math.max(0,Math.round((Date.now()-lbUpdated)/60000));n.textContent="Live from the server. Updated "+(m<1?"just now":m+" min ago")+"."}
+  else n.textContent="Preview data. Live stats show here once the server connects."
+}
+function lbTabs(){
+  $("#lbtabs").innerHTML=LB_CATS.map(c=>`<button class="btn${c[0]===lbCat?"":" alt"}" role="tab" aria-selected="${c[0]===lbCat}" data-lb="${c[0]}">${c[1]}</button>`).join("");
+}
+$("#lbtabs").addEventListener("click",e=>{const b=e.target.closest("[data-lb]");if(!b)return;lbCat=b.dataset.lb;lbTabs();lbRows()});
+async function lbLoad(){
+  try{
+    const r=await fetch("/api/leaderboard",{cache:"no-store"});
+    const d=await r.json();
+    if(LB_CATS.some(c=>Array.isArray(d[c[0]])&&d[c[0]].length)){lbData=d;lbLive=true;lbUpdated=d.updated||Date.now();lbRows()}
+  }catch(e){}
+}
+lbTabs();lbRows();lbLoad();
+setInterval(()=>{if(!document.hidden)lbLoad()},60000);
 
 /* Cloudflare Turnstile gate */
 const TURNSTILE_SITEKEY="0x4AAAAAAFd4f_PWantuoBUG"; // public key from Cloudflare dashboard
